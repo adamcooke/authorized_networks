@@ -1,0 +1,8 @@
+default:
+  - 127.0.0.1/32
+  - 10.0.0.0/24
+  - blahblah
+
+secondary_group:
+  - 172.16.0.0/24
+  - 2a00:67a0:abcd::/64

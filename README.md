@@ -1,5 +1,8 @@
 # Authorized Networks
 
+[![Build Status](https://travis-ci.org/adamcooke/authorized_networks.svg?branch=master)](https://travis-ci.org/adamcooke/authorized_networks) [![Gem Version](https://badge.fury.io/rb/authorized_networks.svg)](https://badge.fury.io/rb/authorized_networks)
+
+
 This library is a very small wrapper to help identify whether a given IP address is part of an authorized network or not. It integrates with Rails applications to provide a `before_action` callback which can be used to block unauthorized requests.
 
 ## Installation

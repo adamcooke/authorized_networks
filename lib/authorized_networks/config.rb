@@ -13,7 +13,13 @@ module AuthorizedNetworks
     #
     # @return [Array<Symbol>]
     def default_groups
-      @default_groups ||= [:default]
+      @default_groups ||= begin
+        if ENV['AUTHORIZED_NETWORK_GROUPS'].is_a?(String)
+          group_list_from_env(ENV['AUTHORIZED_NETWORK_GROUPS'])
+        else
+          [:default]
+        end
+      end
     end
 
     # Set a networks hash directly in the configuration rather than using a config file file
@@ -51,6 +57,10 @@ module AuthorizedNetworks
       else
         "/etc/authorized_networks.yml"
       end
+    end
+
+    def group_list_from_env(string)
+      string.split(/\s*\,\s*/).map(&:to_sym)
     end
 
   end

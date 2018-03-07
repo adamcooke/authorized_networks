@@ -20,7 +20,15 @@ module AuthorizedNetworks
 
       @networks ||= begin
         if @config.networks
-          normalize_ips(@config.networks)
+          if @config.networks.is_a?(Proc)
+            normalize_ips(@config.networks.call)
+          elsif @config.networks.is_a?(Hash)
+            normalize_ips(@config.networks)
+          elsif @config.networks.is_a?(Array)
+            normalize_ips(:default => @config.networks)
+          else
+            {}
+          end
         elsif File.exist?(@config.networks_file_path)
           @networks_cached_at = Time.now.utc
           normalize_ips(YAML.safe_load(File.read(@config.networks_file_path)))

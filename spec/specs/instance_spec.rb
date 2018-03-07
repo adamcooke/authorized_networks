@@ -43,6 +43,18 @@ describe AuthorizedNetworks::Instance do
       expect(instance.networks[:default]).to all(be_a(IPAddr))
     end
 
+    it "should return the networks from the config if one is provided as a block" do
+      instance = AuthorizedNetworks::Instance.new { |config| config.networks = proc { {'default' => ['8.8.8.8']} } }
+      expect(instance.networks[:default].first).to include('8.8.8.8')
+      expect(instance.networks[:default]).to all(be_a(IPAddr))
+    end
+
+    it "should return the networks from the config if one is provided as a array" do
+      instance = AuthorizedNetworks::Instance.new { |config| config.networks = ['8.8.8.8'] }
+      expect(instance.networks[:default].first).to include('8.8.8.8')
+      expect(instance.networks[:default]).to all(be_a(IPAddr))
+    end
+
   end
 
   context ".valid_ip?" do

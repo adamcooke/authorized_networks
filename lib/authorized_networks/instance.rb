@@ -34,6 +34,8 @@ module AuthorizedNetworks
     #
     # @return [Boolean]
     def valid_ip?(ip, options = {})
+      return true if @config.disabled?
+
       ip = IPAddr.new(ip.to_s) rescue nil
       return false unless ip.is_a?(IPAddr)
       groups = options[:groups] || @config.default_groups
@@ -61,10 +63,14 @@ module AuthorizedNetworks
       hash.each_with_object({}) do |(group_name, networks), hash|
         networks = [networks.to_s] unless networks.is_a?(Array)
         hash[group_name.to_sym] = networks.map do |network|
-          begin
-            IPAddr.new(network.to_s)
-          rescue IPAddr::InvalidAddressError
-            nil
+          if network.is_a?(IPAddr)
+            network
+          else
+            begin
+              IPAddr.new(network.to_s)
+            rescue IPAddr::InvalidAddressError
+              nil
+            end
           end
         end.compact
       end

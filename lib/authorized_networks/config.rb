@@ -30,6 +30,19 @@ module AuthorizedNetworks
     end
     attr_writer :network_list_cache_ttl
 
+    # Is this disabled?
+    #
+    # @return [Boolean]
+    def disabled?
+      @disabled || false
+    end
+
+    # Disable everything. Any call to valid_ip? will be returned as true and no
+    # network lists will be loaded.
+    def disable!
+      @disabled = true
+    end
+
     private
 
     def find_default_networks_file_path

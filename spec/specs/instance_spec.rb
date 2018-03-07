@@ -36,6 +36,13 @@ describe AuthorizedNetworks::Instance do
       expect(instance.networks[:default].first).to include('8.8.8.8')
       expect(instance.networks[:default]).to all(be_a(IPAddr))
     end
+
+    it "should allow IPAddr objects to be specified for config-level networks" do
+      instance = AuthorizedNetworks::Instance.new { |config| config.networks = {'default' => [IPAddr.new('8.8.8.8')]}}
+      expect(instance.networks[:default].first).to include('8.8.8.8')
+      expect(instance.networks[:default]).to all(be_a(IPAddr))
+    end
+
   end
 
   context ".valid_ip?" do
@@ -64,6 +71,10 @@ describe AuthorizedNetworks::Instance do
       expect(instance.valid_ip?('127.0.0.1', :groups => [:secondary_group])).to be false
     end
 
+    it "should return true when disabled" do
+      instance = AuthorizedNetworks::Instance.new { |config| config.disable! }
+      expect(instance.valid_ip?('3.4.6.1')).to be true
+    end
   end
 
   context "valid_ip!" do

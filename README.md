@@ -41,6 +41,13 @@ AuthorizedNetworks.configure do |config|
   # Change the path to the config file
   config.networks_file_path = "/some/other/path.yml"
 
+  # Disable everything. Any query to determine if an IP is valid will return true.
+  config.disable!
+
+  # Set a list of approved networks (an hash with arrays of strings or IPAddr objects, please)
+  # if you don't wish to load from a file.
+  config.networks = {:some_group => ['172.16.0.0/24']}
+
 end
 ```
 
